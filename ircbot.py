@@ -11,9 +11,9 @@ class IrcBot(irc.IRCClient):
     """
         Simple irc bot
     """
-    def __init__(self):
+    def __init__(self, cfg):
         self.nickname = "MattBot"
-        self.cfg = Config(join(expanduser("~", ".matt_alert")))
+        self.cfg = cfg
         #self.cfg = Config("test_config")
         self.mail = MailAlert()
 
@@ -28,7 +28,9 @@ class IrcBot(irc.IRCClient):
 
     def signedOn(self):
         """Called when bot has succesfully signed on to server."""
-        self.join(self.factory.channel)
+        for channel in self.cfg.getoption("channels"):
+            print channel
+            self.join(channel)
 
     def privmsg(self, user, channel, message):
         """
@@ -54,11 +56,11 @@ class IRCBotFactory(protocol.ClientFactory):
         Factory for ircbot
     """
 
-    def __init__(self, channel):
-        self.channel = channel
+    def __init__(self):
+        self.cfg = Config(join(expanduser("~"), ".matt_alert"))
 
     def buildProtocol(self, addr):
-        p = IrcBot()
+        p = IrcBot(self.cfg)
         p.factory = self
         return p
 
@@ -72,7 +74,7 @@ class IRCBotFactory(protocol.ClientFactory):
 
 
 if __name__ == '__main__':
-    f = IRCBotFactory(sys.argv[1])
+    f = IRCBotFactory()
 
     # connect factory to this host and port
     reactor.connectTCP("irc.freenode.net", 6667, f)

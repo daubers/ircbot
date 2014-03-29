@@ -11,7 +11,7 @@ class MailAlert:
     """
 
     def __init__(self):
-        self.__config = Config(join(expanduser("~", ".matt_alert")))
+        self.__config = Config(join(expanduser("~"), ".matt_alert"))
         #self.__config = Config("test_config")
 
     def send(self, message):

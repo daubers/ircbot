@@ -22,7 +22,8 @@ class Config:
                 values = re.search(r"(?P<key>.*)\W?:\W?(?P<value>.*)", line).groupdict()
                 if not values is None:
                     if len(values['value'].strip().split(",")) > 1 and values['value'].strip().startswith("["):
-                        self.__config[values['key'].strip()] = values['value'].split(",")
+                        channels = [i.strip("[").strip("]") for i in values['value'].split(",")]
+                        self.__config[values['key'].strip()] = [i for i in channels if i != ""]
                     else:
                         self.__config[values['key'].strip()] = values['value'].strip()
         cfgfile.close()

@@ -4,4 +4,5 @@ smtp_password : bobspassword
 smtp_from_address : bob@bob.com
 smtp_to_address : bob@bob.com
 nicknames : [fred,bob,jimmy]
+channels : [#reading-hackspace,]
 pm_reply : Hello, I am a friendly alert bot. My owner has been sent this PM and might contact you.
